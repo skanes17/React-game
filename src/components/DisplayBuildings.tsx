@@ -15,7 +15,7 @@ export default function DisplayBuildings({ buildings }: DisplayBuildingsProps) {
 
   return (
     <>
-      <div style={{ fontWeight: "bold" }}>Buildings constructed</div>
+      <div className="font-bold text-amber-300">Buildings constructed</div>
       {/* buildings are mapped dynamically to component */}
       {constructedBuildings.map((buildingType) => (
         <>

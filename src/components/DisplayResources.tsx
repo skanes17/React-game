@@ -8,12 +8,14 @@ interface DisplayResourcesProps {
 export default function DisplayResources({ resources }: DisplayResourcesProps) {
   return (
     <>
-      <div style={{ fontWeight: "bold" }}>Resources</div>
-      {/* TODO: <Resource /> three times -- DRY! */}
-      <div>🛠️{resources.freeworkers} Freeworkers</div>
-      <div>🪵{resources.woodCollected} Wood </div>
-      <div>🪨{resources.stoneCollected} Stone </div>
-      <div>🔩{resources.metalCollected} Metal </div>
+      <div className="flex">
+        <div className="flex-none font-bold text-amber-300">Resources: </div>
+        {/* TODO: <Resource /> three times -- DRY! */}
+        <div className="flex-none">🛠️{resources.freeworkers} Freeworkers</div>
+        <div className="flex-none">🪵{resources.woodCollected} Wood </div>
+        <div className="flex-none">🪨{resources.stoneCollected} Stone </div>
+        <div className="flex-none">🔩{resources.metalCollected} Metal </div>
+      </div>
     </>
   );
 }

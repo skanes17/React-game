@@ -26,17 +26,8 @@ export default function Planning({
 }: PlanningProps) {
   return (
     <div>
-      <h2 className="text-4xl font-extrabold dark:text-white">Planning</h2>
       <div className="displayResources">
         <DisplayResources resources={resources} />
-      </div>
-      <br></br>
-
-      <DisplayVillagers resources={resources} setResources={setResources} />
-
-      <br></br>
-
-      <div className="displayUnits">
         <DisplayUnits unitCounts={unitCounts} />
       </div>
       <br></br>
@@ -44,8 +35,12 @@ export default function Planning({
       <div className="displayBuildings">
         <DisplayBuildings buildings={buildings} />
       </div>
+      <br></br>
+
+      <DisplayVillagers resources={resources} setResources={setResources} />
 
       <br></br>
+
       {/* upgrades could show conditionally when enough resources are gathered */}
       {/*       <Upgrades />
       <br></br>

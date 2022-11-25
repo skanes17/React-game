@@ -13,25 +13,27 @@ export default function DisplayVillagers({
 }: DisplayVillagersProps) {
   return (
     <div className="workers">
-      <div style={{ fontWeight: "bold" }}>Workers</div>
-      <Villager
-        name="🪓 Woodcutters"
-        workerType="woodcutters"
-        resources={resources}
-        setResources={setResources}
-      />
-      <Villager
-        name="⚒️ Stonemasons"
-        workerType="stonemasons"
-        resources={resources}
-        setResources={setResources}
-      />
-      <Villager
-        name="🥽 Metalworkers"
-        workerType="metalworkers"
-        resources={resources}
-        setResources={setResources}
-      />
+      <div className="font-bold text-amber-300">Workers</div>
+      <div className="flex">
+        <Villager
+          name="🪓 Woodcutters"
+          workerType="woodcutters"
+          resources={resources}
+          setResources={setResources}
+        />
+        <Villager
+          name="⚒️ Stonemasons"
+          workerType="stonemasons"
+          resources={resources}
+          setResources={setResources}
+        />
+        <Villager
+          name="🥽 Metalworkers"
+          workerType="metalworkers"
+          resources={resources}
+          setResources={setResources}
+        />
+      </div>
     </div>
   );
 }
