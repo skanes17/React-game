@@ -26,10 +26,69 @@ export default function Combat({
   // select a random unit from the arrays
   const friendlyUnit =
     myUnitsCopy[Math.floor(Math.random() * myUnitsCopy.length)];
-  // console.log("--Selected friendly unit is... " + friendlyUnit.unitType);
   const enemyUnit =
     enemyUnitsCopy[Math.floor(Math.random() * enemyUnitsCopy.length)];
-  // console.log("--Selected enemy unit is... " + enemyUnit.unitType);
+
+  friendlyUnit.health -= enemyUnit.attack;
+  enemyUnit.health -= friendlyUnit.attack;
+
+  if (combatPhase === 1) {
+    return <div>Faceoff info</div>;
+  }
+
+  if (combatPhase === 2) {
+    return <div>Unit health and damage info</div>;
+  }
+
+  if (combatPhase === 3) {
+    return <div>Army and building damage info</div>;
+  }
+
+  if (myUnitsCopy.length === 0 && enemyUnitsCopy.length === 0) {
+    return (
+      <div>
+        Your units defeated each other at the last moment. Prepare for the next
+        battle!
+      </div>
+    );
+  }
+  if (myUnitsCopy.length === 0) {
+    return <div>Your army was defeated. Your buildings took damage!</div>;
+  }
+  if (enemyUnitsCopy.length === 0) {
+    return <div>Enemy army defeated. You won the battle!</div>;
+  }
+
+  if (friendlyUnit.health > 0) {
+    return (
+      <div>
+        The friendly {friendlyUnit.name} takes {enemyUnit.attack} damage but
+        survives with {friendlyUnit.health} health.
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        The friendly {friendlyUnit.name} takes {enemyUnit.attack} damage and
+        falls.
+      </div>
+    );
+  }
+
+  if (enemyUnit.health > 0) {
+    return (
+      <div>
+        The enemy {enemyUnit.name} takes {friendlyUnit.attack} damage but
+        survives with {enemyUnit.health} health.
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        The enemy {enemyUnit.name} takes {friendlyUnit.attack} damage and falls.
+      </div>
+    );
+  }
 
   if (combatPhase === 1) {
     return <FaceOff friendlyUnit={friendlyUnit} enemyUnit={enemyUnit} />;
@@ -37,83 +96,9 @@ export default function Combat({
     return <div>Hello</div>;
   }
 
-  /*   friendlyUnit.health -= enemyUnit.attack;
-  enemyUnit.health -= friendlyUnit.attack;
-
-  // if the enemy survives...
-  if (enemyUnit.health > 0) {
-    console.log(
-      "The enemy takes " +
-        friendlyUnit.attack +
-        " damage but survives with " +
-        enemyUnit.health +
-        " health."
-    );
-    // copy the array
-    enemyUnitsCopy.map((unit) => {
-      // check if id matches the currently selected unit
-      if (unit.id === enemyUnit.id) {
-        return {
-          // if so, change that unit's health/health accordingly
-          ...unit,
-          health: enemyUnit.health,
-        };
-      } else {
-        // if not, don't change anything
-        return unit;
-      }
-    });
-  } else {
-    // if the enemy dies...
-    console.log(
-      "Enemy " +
-        enemyUnit.name +
-        " takes " +
-        friendlyUnit.attack +
-        " damage and dies."
-    );
-    // remove enemy from their pool
-    setEnemyUnits(enemyUnitsCopy.filter((unit) => unit.id !== enemyUnit.id));
-  }
-
-  // if the friendly unit survives...
-  if (friendlyUnit.health > 0) {
-    console.log(
-      "Friendly " +
-        friendlyUnit.name +
-        " takes " +
-        enemyUnit.attack +
-        " damage but survives with " +
-        friendlyUnit.health +
-        " health."
-    );
-    // code to return friendly to pool with current health
-    // copy the array
-    myUnitsCopy.map((unit) => {
-      // check if id matches the currently selected unit
-      if (unit.id === friendlyUnit.id) {
-        return {
-          // if so, change that unit's health/health accordingly
-          ...unit,
-          health: friendlyUnit.health,
-        };
-      } else {
-        // if not, don't change anything
-        return unit;
-      }
-    });
-  } else {
-    // if the friendly dies...
-    console.log(
-      friendlyUnit.name + " takes " + enemyUnit.attack + " damage and dies."
-    );
-    // remove friendly from pool
-    myUnitsCopy.filter((unit) => unit.id !== friendlyUnit.id);
-  }
-  console.log("The new enemy array is...");
-  console.log(enemyUnits);
-  console.log("The new friendly array is...");
-  console.log(myUnits); */
+  // put these on a button??
+  myUnitsCopy.filter((unit) => unit.id !== friendlyUnit.id);
+  enemyUnitsCopy.filter((unit) => unit.id !== enemyUnit.id);
 }
 
 // TODO: Set myUnits state at end of all combat!
