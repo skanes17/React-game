@@ -20,6 +20,7 @@ import townCenter from "../images/town-center.png";
 import DisplayTrainingCards from "./DisplayTrainingCards";
 import FlexWrapContainer from "./FlexWrapContainer";
 import Button from "./Button";
+import Combat from "./Combat";
 
 // TODO: Have a pre-battle screen to summarize what you have?
 // TODO: Maybe if you choose not to use a freeworker you can get some gold (points)
@@ -33,7 +34,7 @@ import Button from "./Button";
 export default function Game(props: GameProps) {
   const [turn, setTurn] = useState(1);
   // combat turn will change over time
-  const [combatTurn, setcombatTurn] = useState(4);
+  const [combatTurn, setcombatTurn] = useState(2);
   const [waveCounter, setWaveCounter] = useState(1);
 
   // NEW RESOURCE STRUCTURE
@@ -594,10 +595,10 @@ export default function Game(props: GameProps) {
     tanky: enemyUnits.filter((unit) => unit.unitType === "tanky").length,
   };
 
-  let inCombat = false;
+  const [inCombat, setInCombat] = useState(false);
 
   const triggerCombat = () => {
-    inCombat = !inCombat;
+    setInCombat(!inCombat);
     console.log(inCombat);
   };
 
@@ -617,6 +618,7 @@ export default function Game(props: GameProps) {
             <Button
               buttonColor="red"
               onClick={() => {
+                // TODO: Remove endTurn call when combat is built
                 endTurn();
                 triggerCombat();
               }}
@@ -626,7 +628,6 @@ export default function Game(props: GameProps) {
           )}
         </div>
 
-        {/* TODO: Make "Begin Combat" button which is rendered on combatTurn */}
         {/* TODO: At end of combat, increment the combatTurn */}
 
         {/* This div holds stats */}
@@ -644,44 +645,59 @@ export default function Game(props: GameProps) {
 
       <br></br>
 
-      <div className="flex flex-wrap justify-evenly">
-        <FlexWrapContainer headerText="Assign Workers">
-          <AssignWorkers resources={resources} setResources={setResources} />
-        </FlexWrapContainer>
+      {/* TODO: Refactor this */}
+      {inCombat ? (
+        <Combat
+          myUnits={myUnits}
+          setMyUnits={setMyUnits}
+          enemyUnits={enemyUnits}
+          setEnemyUnits={setEnemyUnits}
+        />
+      ) : (
+        <>
+          <div className="flex flex-wrap justify-evenly">
+            <FlexWrapContainer headerText="Assign Workers">
+              <AssignWorkers
+                resources={resources}
+                setResources={setResources}
+              />
+            </FlexWrapContainer>
 
-        <FlexWrapContainer headerText="Train Units">
-          <DisplayTrainingCards
-            resources={resources}
-            setResources={setResources}
-            unitCosts={unitCosts}
-            unitsInTraining={unitsInTraining}
-            BASE_UNIT_DATA={BASE_UNIT_DATA}
-            addTrainingUnit={addTrainingUnit}
-            removeTrainingUnit={removeTrainingUnit}
-          />
-        </FlexWrapContainer>
+            <FlexWrapContainer headerText="Train Units">
+              <DisplayTrainingCards
+                resources={resources}
+                setResources={setResources}
+                unitCosts={unitCosts}
+                unitsInTraining={unitsInTraining}
+                BASE_UNIT_DATA={BASE_UNIT_DATA}
+                addTrainingUnit={addTrainingUnit}
+                removeTrainingUnit={removeTrainingUnit}
+              />
+            </FlexWrapContainer>
 
-        {/* <br></br> */}
+            {/* <br></br> */}
 
-        <FlexWrapContainer headerText="Construct Buildings">
-          {/* TODO: Toss this in a component? */}
-          {buildingsToConstruct.map((buildingType) => (
-            <ConstructBuilding
-              buildings={buildings}
-              setBuildings={setBuildings}
-              buildingType={buildingType}
-              resources={resources}
-              setResources={setResources}
-            />
-          ))}
-        </FlexWrapContainer>
-      </div>
+            <FlexWrapContainer headerText="Construct Buildings">
+              {/* TODO: Toss this in a component? */}
+              {buildingsToConstruct.map((buildingType) => (
+                <ConstructBuilding
+                  buildings={buildings}
+                  setBuildings={setBuildings}
+                  buildingType={buildingType}
+                  resources={resources}
+                  setResources={setResources}
+                />
+              ))}
+            </FlexWrapContainer>
+          </div>
 
-      <div className="flex flex-wrap justify-evenly">
-        <FlexWrapContainer headerText="Buildings Constructed">
-          <DisplayBuildings buildings={buildings} />
-        </FlexWrapContainer>
-      </div>
+          <div className="flex flex-wrap justify-evenly">
+            <FlexWrapContainer headerText="Buildings Constructed">
+              <DisplayBuildings buildings={buildings} />
+            </FlexWrapContainer>
+          </div>
+        </>
+      )}
 
       <br></br>
       <br></br>
