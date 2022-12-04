@@ -33,7 +33,8 @@ import Button from "./Button";
 export default function Game(props: GameProps) {
   const [turn, setTurn] = useState(1);
   // combat turn will change over time
-  const [combatTurn, setCombatTurn] = useState(4);
+  const [combatTurn, setcombatTurn] = useState(4);
+  const [waveCounter, setWaveCounter] = useState(1);
 
   // NEW RESOURCE STRUCTURE
   // TODO: Check Typing on this resource to make more flexible
@@ -524,7 +525,6 @@ export default function Game(props: GameProps) {
     }
 
     const resourcesCopy = { ...resources };
-    console.log(resourcesCopy);
 
     // TODO: Make this dynamic based on existing resources
 
@@ -594,6 +594,13 @@ export default function Game(props: GameProps) {
     tanky: enemyUnits.filter((unit) => unit.unitType === "tanky").length,
   };
 
+  let inCombat = false;
+
+  const triggerCombat = () => {
+    inCombat = !inCombat;
+    console.log(inCombat);
+  };
+
   return (
     <div className="p-4">
       {/* TODO: Make this a right-side bar for large screen, top bar for smaller */}
@@ -602,13 +609,30 @@ export default function Game(props: GameProps) {
       <div className="grid auto-cols-auto">
         {/* This div holds button */}
         <div className="col-start-1 flex items-center justify-start pl-4">
-          <Button buttonColor="blue" onClick={endTurn}>
-            End Turn {turn}
-          </Button>
+          {turn !== combatTurn - 1 ? (
+            <Button buttonColor="blue" onClick={() => endTurn()}>
+              End Turn {turn}
+            </Button>
+          ) : (
+            <Button
+              buttonColor="red"
+              onClick={() => {
+                endTurn();
+                triggerCombat();
+              }}
+            >
+              Begin Combat Wave {waveCounter}
+            </Button>
+          )}
         </div>
-        {/* This div holds stats */}
 
+        {/* TODO: Make "Begin Combat" button which is rendered on combatTurn */}
+        {/* TODO: At end of combat, increment the combatTurn */}
+
+        {/* This div holds stats */}
         <div className="col-start-2 grid auto-cols-fr grid-flow-col justify-end rounded-b-md border border-blue-900 bg-blue-900/25 px-4 hover:bg-blue-900/50 sm:gap-x-4 md:gap-x-8 lg:gap-x-16">
+          <div>Turn {turn}</div>
+
           <DisplayResources
             resources={resources}
             resourceTypes={resourceTypes}
@@ -640,7 +664,7 @@ export default function Game(props: GameProps) {
         {/* <br></br> */}
 
         <FlexWrapContainer headerText="Construct Buildings">
-          {/* TODO: Toss this in a component */}
+          {/* TODO: Toss this in a component? */}
           {buildingsToConstruct.map((buildingType) => (
             <ConstructBuilding
               buildings={buildings}
