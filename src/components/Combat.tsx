@@ -10,7 +10,8 @@ interface CombatProps {
   setEnemyUnits: any;
 }
 
-//TODO: Modify stats directly, don't use the check for less than zero
+// TODO: Modify stats directly, don't use the check for less than zero
+// TODO: Maybe try moving this to Game??
 
 export default function Combat({
   myUnits,
@@ -18,19 +19,30 @@ export default function Combat({
   enemyUnits,
   setEnemyUnits,
 }: CombatProps) {
-  const [combatPhase, setCombatPhase] = useState(1);
+  //const [combatPhase, setCombatPhase] = useState(0);
+  let combatPhase = 0;
 
   const myUnitsCopy = [...myUnits];
   const enemyUnitsCopy = [...enemyUnits];
 
-  // select a random unit from the arrays
-  const friendlyUnit =
-    myUnitsCopy[Math.floor(Math.random() * myUnitsCopy.length)];
-  const enemyUnit =
-    enemyUnitsCopy[Math.floor(Math.random() * enemyUnitsCopy.length)];
+  let friendlyUnit: Unit;
+  let enemyUnit: Unit;
 
-  friendlyUnit.health -= enemyUnit.attack;
-  enemyUnit.health -= friendlyUnit.attack;
+  const selectUnits = (myUnitsCopy: Unit[], enemyUnitsCopy: Unit[]) => {
+    // select a random unit from the arrays
+    friendlyUnit = myUnitsCopy[Math.floor(Math.random() * myUnitsCopy.length)];
+    enemyUnit =
+      enemyUnitsCopy[Math.floor(Math.random() * enemyUnitsCopy.length)];
+    combatPhase = 1;
+  };
+
+  const attackEachOther = (friendlyUnit: Unit, enemyUnit: Unit) => {
+    friendlyUnit.health -= enemyUnit.attack;
+    enemyUnit.health -= friendlyUnit.attack;
+    combatPhase = 2;
+  };
+
+  // myUnitsCopy.filter((unit) => unit.id !== friendlyUnit.id)
 
   if (combatPhase === 1) {
     return <div>Faceoff info</div>;
